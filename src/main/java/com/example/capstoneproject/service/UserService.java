@@ -22,4 +22,19 @@ public class UserService {
     public User save(User user) {
         return userRepository.save(user);
     }
+
+    public double calculateQuote(User user){
+
+        double totalQuote=0;
+
+        VehicleTypeFactor coupe = VehicleTypeFactor.COUPE;
+        coupe.getFactorValue();
+
+
+
+
+
+        return totalQuote;
+
+    }
 }
