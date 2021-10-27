@@ -25,16 +25,30 @@ public class UserService {
 
     public double calculateQuote(User user){
 
-        double totalQuote=0;
-
-        VehicleTypeFactor coupe = VehicleTypeFactor.COUPE;
-        coupe.getFactorValue();
 
 
+        double totalQuote = 100*VehicleTypeFactor.COUPE.getFactorValue()*EngineSizeFactor.SIZE1000.getFactorValue()
+                                *AdditionalDriversFactor.GREATERTHANOREQUALTO2.getFactorValue()
+                                *CommercialUseFactor.YES.getFactorValue()
+                                *OutsideStateUseFactor.YES.getFactorValue()
+                                *VehicleValueFactor.LESSTHAN5000OREQUALTO5000.getFactorValue();
 
 
+
+        totalQuote = Math.round(totalQuote*100.0)/100.0;
 
         return totalQuote;
 
+    }
+
+    private double calculateVehicleTypeFactor(User user){
+
+        double vehicleTypeFactor = 0;
+
+        String vehicleType = user.getVehicleType();
+
+
+
+        return vehicleTypeFactor;
     }
 }

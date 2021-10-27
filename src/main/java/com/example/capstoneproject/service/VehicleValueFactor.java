@@ -6,7 +6,7 @@ public enum VehicleValueFactor {
 
     private double vehicleValue;
 
-    public double getVehicleValue() {
+    public double getFactorValue() {
         return vehicleValue;
     }
 

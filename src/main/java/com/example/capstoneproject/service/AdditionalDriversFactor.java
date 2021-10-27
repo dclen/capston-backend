@@ -6,7 +6,7 @@ public enum AdditionalDriversFactor {
 
     private double factorValue;
 
-    public double getVehicleValue() {
+    public double getFactorValue() {
         return factorValue;
     }
 

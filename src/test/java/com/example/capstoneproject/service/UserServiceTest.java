@@ -4,29 +4,39 @@ import com.example.capstoneproject.model.User;
 import com.example.capstoneproject.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
+
+    @Mock
+    private UserRepository userRepository;
+    @InjectMocks
+    private UserService userService;
+
+    User user = new User();
 
     @BeforeEach
     void setUp() {
-
-
-@Mock
-UserRepository userRepository;
-
-        User user = new User();
-        user.setAdditionalDrivers("3");
-        user.setEngineSize("1000");
-        user.setCurrentValue(5000L);
-        user.setVehicleType("coupe");
-        user.setCommercialPurpose(true);
-        user.setOutsideRegisteredState(true);
     }
 
     @Test
     void calculateQuote() {
+        user.setAdditionalDrivers("3");
+        user.setEngineSize("1000");
+        user.setCurrentValue(5000L);
+        user.setVehicleType("Coupe");
+        user.setCommercialPurpose(true);
+        user.setOutsideRegisteredState(true);
+
+        double expectedResult = 203.28;
+
+        assertEquals(expectedResult,userService.calculateQuote(user));
+
     }
 }
