@@ -5,6 +5,7 @@ import com.example.capstoneproject.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class UserService {
@@ -27,7 +28,7 @@ public class UserService {
 
 
 
-        double totalQuote = 100*VehicleTypeFactor.COUPE.getFactorValue()*EngineSizeFactor.SIZE1000.getFactorValue()
+        double totalQuote = 100*calculateVehicleTypeFactor(user)*calculateEngineSizeFactor(user)
                                 *AdditionalDriversFactor.GREATERTHANOREQUALTO2.getFactorValue()
                                 *CommercialUseFactor.YES.getFactorValue()
                                 *OutsideStateUseFactor.YES.getFactorValue()
@@ -45,10 +46,54 @@ public class UserService {
 
         double vehicleTypeFactor = 0;
 
-        String vehicleType = user.getVehicleType();
+        String vehicleType = user.getVehicleType().toLowerCase(Locale.ROOT);
 
-
+        switch (vehicleType){
+            case "cabriolet":
+                vehicleTypeFactor = VehicleTypeFactor.CABRIOLET.getFactorValue();
+                break;
+            case "coupe":
+                vehicleTypeFactor = VehicleTypeFactor.COUPE.getFactorValue();
+                break;
+            case "estate":
+                vehicleTypeFactor = VehicleTypeFactor.ESTATE.getFactorValue();
+                break;
+            case "hatchback":
+                vehicleTypeFactor = VehicleTypeFactor.HATCHBACK.getFactorValue();
+                break;
+            case "other":
+                vehicleTypeFactor = VehicleTypeFactor.OTHER.getFactorValue();
+                break;
+        }
 
         return vehicleTypeFactor;
+    }
+
+    private double calculateEngineSizeFactor(User user){
+        String engineType = user.getEngineSize().toLowerCase(Locale.ROOT);
+
+        double engineTypeFactor = 0;
+
+        switch (engineType){
+            case "1000":
+                engineTypeFactor = EngineSizeFactor.SIZE1000.getFactorValue();
+                break;
+            case "1600":
+                engineTypeFactor = EngineSizeFactor.SIZE1600.getFactorValue();
+                break;
+            case "2000":
+                engineTypeFactor = EngineSizeFactor.SIZE2000.getFactorValue();
+                break;
+            case "2500":
+                engineTypeFactor = EngineSizeFactor.SIZE2500.getFactorValue();
+                break;
+            case "3000":
+                engineTypeFactor = EngineSizeFactor.SIZE3000.getFactorValue();
+                break;
+            case "other":
+                engineTypeFactor = EngineSizeFactor.OTHER.getFactorValue();
+        }
+
+        return engineTypeFactor;
     }
 }
