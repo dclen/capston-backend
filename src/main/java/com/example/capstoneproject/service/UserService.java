@@ -29,10 +29,10 @@ public class UserService {
 
 
         double totalQuote = 100*calculateVehicleTypeFactor(user)*calculateEngineSizeFactor(user)
-                                *AdditionalDriversFactor.GREATERTHANOREQUALTO2.getFactorValue()
-                                *CommercialUseFactor.YES.getFactorValue()
-                                *OutsideStateUseFactor.YES.getFactorValue()
-                                *VehicleValueFactor.LESSTHAN5000OREQUALTO5000.getFactorValue();
+                                *calculateAdditionalDriversFactor(user)
+                                *calculateCommercialUseFactor(user)
+                                *calculateOutsideStateUseFactor(user)
+                                *calculateVehicleValueFactor(user);
 
 
 
@@ -44,7 +44,7 @@ public class UserService {
 
     private double calculateVehicleTypeFactor(User user){
 
-        double vehicleTypeFactor = 0;
+        double vehicleTypeFactor = 0.0;
 
         String vehicleType = user.getVehicleType().toLowerCase(Locale.ROOT);
 
@@ -72,7 +72,7 @@ public class UserService {
     private double calculateEngineSizeFactor(User user){
         String engineType = user.getEngineSize().toLowerCase(Locale.ROOT);
 
-        double engineTypeFactor = 0;
+        double engineTypeFactor = 0.0;
 
         switch (engineType){
             case "1000":
@@ -95,5 +95,63 @@ public class UserService {
         }
 
         return engineTypeFactor;
+    }
+
+    private double calculateVehicleValueFactor(User user){
+        Long vehicleValue = user.getCurrentValue();
+        double vehicleValueFactor = 0.0;
+
+        if(vehicleValue <= 5000){
+            vehicleValueFactor = VehicleValueFactor.LESSTHAN5000OREQUALTO5000.getFactorValue();
+        }
+        else{
+            vehicleValueFactor = VehicleValueFactor.GREATERTHAN5000.getFactorValue();
+        }
+
+        return vehicleValueFactor;
+    }
+
+    private double calculateCommercialUseFactor(User user){
+        Boolean commercialUseValue = user.getCommercialPurpose();
+        double commercialUseFactor = 0.0;
+
+        if(commercialUseValue){
+            commercialUseFactor = CommercialUseFactor.YES.getFactorValue();
+        }
+        else{
+            commercialUseFactor = CommercialUseFactor.NO.getFactorValue();
+        }
+
+        return commercialUseFactor;
+    }
+
+    private double calculateOutsideStateUseFactor(User user){
+        Boolean outsideStateUseValue = user.getOutsideRegisteredState();
+        double outsideStateUseFactor = 0.0;
+
+        if(outsideStateUseValue){
+            outsideStateUseFactor = OutsideStateUseFactor.YES.getFactorValue();
+        }
+        else{
+            outsideStateUseFactor = OutsideStateUseFactor.NO.getFactorValue();
+        }
+
+        return outsideStateUseFactor;
+    }
+
+    private double calculateAdditionalDriversFactor(User user){
+        String additionalDriversValue = user.getAdditionalDrivers().toLowerCase(Locale.ROOT);
+
+        double additionalDriversFactor = 0.0;
+
+
+        if(Integer.parseInt(additionalDriversValue) < 2){
+            additionalDriversFactor = AdditionalDriversFactor.LESSTHAN2.getFactorValue();
+        }
+        else{
+            additionalDriversFactor = AdditionalDriversFactor.GREATERTHANOREQUALTO2.getFactorValue();
+        }
+
+        return additionalDriversFactor;
     }
 }

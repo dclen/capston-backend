@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.ByteArrayOutputStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -18,6 +20,7 @@ class UserServiceTest {
     private UserRepository userRepository;
     @InjectMocks
     private UserService userService;
+    private final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
     User user = new User();
 
@@ -35,8 +38,9 @@ class UserServiceTest {
         user.setOutsideRegisteredState(true);
 
         double expectedResult = 203.28;
+        double actualResult = userService.calculateQuote(user);
 
-        assertEquals(expectedResult,userService.calculateQuote(user));
+        assertEquals(expectedResult,actualResult);
 
     }
 }
