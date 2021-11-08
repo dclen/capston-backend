@@ -12,7 +12,6 @@ public class CapstoneprojectApplication {
 
         SpringApplication.run(CapstoneprojectApplication.class, args);
 
-        System.out.println(EngineSizeFactor.SIZE1000.getFactorValue());
     }
 
 

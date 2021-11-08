@@ -26,20 +26,15 @@ public class UserService {
 
     public double calculateQuote(User user){
 
-
-
         double totalQuote = 100*calculateVehicleTypeFactor(user)*calculateEngineSizeFactor(user)
                                 *calculateAdditionalDriversFactor(user)
                                 *calculateCommercialUseFactor(user)
                                 *calculateOutsideStateUseFactor(user)
                                 *calculateVehicleValueFactor(user);
 
-
-
         totalQuote = Math.round(totalQuote*100.0)/100.0;
 
         return totalQuote;
-
     }
 
     private double calculateVehicleTypeFactor(User user){
