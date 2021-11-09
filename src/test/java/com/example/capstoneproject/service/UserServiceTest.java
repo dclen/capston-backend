@@ -32,10 +32,10 @@ class UserServiceTest {
     void calculateQuote() {
         user.setAdditionalDrivers("3");
         user.setEngineSize("1000");
-        user.setCurrentValue(5000L);
+        user.setCurrentValue(5000);
         user.setVehicleType("Coupe");
-        user.setCommercialPurpose(true);
-        user.setOutsideRegisteredState(true);
+        user.setUsedForCommercial(true);
+        user.setUsedOutsideState(true);
 
         double expectedResult = 203.28;
         double actualResult = userService.calculateQuote(user);

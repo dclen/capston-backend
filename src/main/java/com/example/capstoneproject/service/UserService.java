@@ -93,8 +93,8 @@ public class UserService {
     }
 
     private double calculateVehicleValueFactor(User user){
-        Long vehicleValue = user.getCurrentValue();
-        double vehicleValueFactor = 0.0;
+        double vehicleValue = user.getCurrentValue();
+        double vehicleValueFactor;
 
         if(vehicleValue <= 5000){
             vehicleValueFactor = VehicleValueFactor.LESSTHAN5000OREQUALTO5000.getFactorValue();
@@ -107,8 +107,8 @@ public class UserService {
     }
 
     private double calculateCommercialUseFactor(User user){
-        Boolean commercialUseValue = user.getCommercialPurpose();
-        double commercialUseFactor = 0.0;
+        Boolean commercialUseValue = user.getUsedForCommercial();
+        double commercialUseFactor;
 
         if(commercialUseValue){
             commercialUseFactor = CommercialUseFactor.YES.getFactorValue();
@@ -121,8 +121,8 @@ public class UserService {
     }
 
     private double calculateOutsideStateUseFactor(User user){
-        Boolean outsideStateUseValue = user.getOutsideRegisteredState();
-        double outsideStateUseFactor = 0.0;
+        Boolean outsideStateUseValue = user.getUsedOutsideState();
+        double outsideStateUseFactor;
 
         if(outsideStateUseValue){
             outsideStateUseFactor = OutsideStateUseFactor.YES.getFactorValue();
@@ -137,7 +137,7 @@ public class UserService {
     private double calculateAdditionalDriversFactor(User user){
         String additionalDriversValue = user.getAdditionalDrivers().toLowerCase(Locale.ROOT);
 
-        double additionalDriversFactor = 0.0;
+        double additionalDriversFactor;
 
 
         if(Integer.parseInt(additionalDriversValue) < 2){

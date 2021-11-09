@@ -70,7 +70,7 @@ public class UserControllerTest {
         var prefix = "Mr";
         var firstName = "Adam";
         var lastName = "Stewart";
-        var telephoneNumber = 48321366L;
+        var telephoneNumber = "48321366";
         var addressLine1 = "addressLine1";
         var addressLine2 = "addressLine2";
         var city = "belfast";
@@ -114,8 +114,8 @@ public class UserControllerTest {
                 () -> assertEquals(vehicleType, userFromDB.getVehicleType()),
                 () -> assertEquals(engineSize, userFromDB.getEngineSize()),
                 () -> assertEquals(additionalDrivers, userFromDB.getAdditionalDrivers()),
-                () -> assertEquals(commercialPurpose, userFromDB.getCommercialPurpose()),
-                () -> assertEquals(outsideRegisteredState, userFromDB.getOutsideRegisteredState()),
+                () -> assertEquals(commercialPurpose, userFromDB.getUsedForCommercial()),
+                () -> assertEquals(outsideRegisteredState, userFromDB.getUsedOutsideState()),
                 () -> assertEquals(currentValue, userFromDB.getCurrentValue()),
                 () -> assertEquals(dateRegistered, userFromDB.getDateRegistered())
         );

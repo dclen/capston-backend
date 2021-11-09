@@ -25,4 +25,21 @@ public class UserController {
     User save(@RequestBody User user) {
         return service.save(user);
     }
+
+    @GetMapping("/capstone/calculatequote")
+    @CrossOrigin(origins = "http://localhost:3000")
+    double calculate(@RequestParam String additionalDrivers, @RequestParam String engineSize, @RequestParam double currentValue, @RequestParam String vehicleType, @RequestParam Boolean usedForCommercial, @RequestParam Boolean usedOutsideState) {
+
+        User user = new User();
+        user.setAdditionalDrivers(additionalDrivers);
+        user.setEngineSize(engineSize);
+        user.setCurrentValue(currentValue);
+        user.setVehicleType(vehicleType);
+        user.setUsedForCommercial(usedForCommercial);
+        user.setUsedOutsideState(usedOutsideState);
+
+        return service.calculateQuote(user);
+
+    }
+
 }

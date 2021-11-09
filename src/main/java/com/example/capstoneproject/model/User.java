@@ -14,7 +14,7 @@ public class User {
     private String prefix;
     private String firstName;
     private String lastName;
-    private Long telephoneNumber;
+    private String telephoneNumber;
     private String addressLine1;
     private String addressLine2;
     private String city;
@@ -22,16 +22,16 @@ public class User {
     private String vehicleType;
     private String engineSize;
     private String additionalDrivers;
-    private Boolean commercialPurpose;
-    private Boolean outsideRegisteredState;
-    private Long currentValue;
+    private Boolean usedForCommercial;
+    private Boolean usedOutsideState;
+    private double currentValue;
     private String dateRegistered;
 
     public User() {
     }
 
-    public User(Long id, String prefix, String firstName, String lastName, Long telephoneNumber, String addressLine1, String addressLine2, String city, String postcode,
-                String vehicleType, String engineSize, String additionalDrivers, Boolean commercialPurpose, Boolean outsideRegisteredState, Long currentValue, String dateRegistered) {
+    public User(Long id, String prefix, String firstName, String lastName, String telephoneNumber, String addressLine1, String addressLine2, String city, String postcode,
+                String vehicleType, String engineSize, String additionalDrivers, Boolean usedForCommercial, Boolean usedOutsideState, double currentValue, String dateRegistered) {
 
         this.id = id;
         this.prefix = prefix;
@@ -45,8 +45,8 @@ public class User {
         this.vehicleType = vehicleType;
         this.engineSize = engineSize;
         this.additionalDrivers = additionalDrivers;
-        this.commercialPurpose = commercialPurpose;
-        this.outsideRegisteredState = outsideRegisteredState;
+        this.usedForCommercial = usedForCommercial;
+        this.usedOutsideState = usedOutsideState;
         this.currentValue = currentValue;
         this.dateRegistered = dateRegistered;
     }
@@ -83,11 +83,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Long getTelephoneNumber() {
+    public String getTelephoneNumber() {
         return telephoneNumber;
     }
 
-    public void setTelephoneNumber(Long telephoneNumber) {
+    public void setTelephoneNumber(String telephoneNumber) {
         this.telephoneNumber = telephoneNumber;
     }
 
@@ -147,27 +147,27 @@ public class User {
         this.additionalDrivers = additionalDrivers;
     }
 
-    public Boolean getCommercialPurpose() {
-        return commercialPurpose;
+    public Boolean getUsedForCommercial() {
+        return usedForCommercial;
     }
 
-    public void setCommercialPurpose(Boolean commercialPurpose) {
-        this.commercialPurpose = commercialPurpose;
+    public void setUsedForCommercial(Boolean commercialPurpose) {
+        this.usedForCommercial = commercialPurpose;
     }
 
-    public Boolean getOutsideRegisteredState() {
-        return outsideRegisteredState;
+    public Boolean getUsedOutsideState() {
+        return usedOutsideState;
     }
 
-    public void setOutsideRegisteredState(Boolean outsideRegisteredState) {
-        this.outsideRegisteredState = outsideRegisteredState;
+    public void setUsedOutsideState(Boolean outsideRegisteredState) {
+        this.usedOutsideState = outsideRegisteredState;
     }
 
-    public Long getCurrentValue() {
+    public double getCurrentValue() {
         return currentValue;
     }
 
-    public void setCurrentValue(Long currentValue) {
+    public void setCurrentValue(double currentValue) {
         this.currentValue = currentValue;
     }
 
