@@ -58,7 +58,7 @@ public class UserControllerTest {
         List<User> usersFromDB = objectMapper.readValue(usersFromDbInJSONFormat, new TypeReference<>() {
         });
 
-        assertEquals(3, usersFromDB.size());
+        assertEquals(4, usersFromDB.size());
 
     }
 
@@ -80,7 +80,7 @@ public class UserControllerTest {
         var additionalDrivers = "1";
         var commercialPurpose = true;
         var outsideRegisteredState = true;
-        var currentValue = 10000L;
+        var currentValue = 10000;
         var dateRegistered = "10/10/2021";
 
 
