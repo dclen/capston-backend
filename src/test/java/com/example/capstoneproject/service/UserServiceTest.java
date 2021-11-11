@@ -20,7 +20,6 @@ class UserServiceTest {
     private UserRepository userRepository;
     @InjectMocks
     private UserService userService;
-    private final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
     User user = new User();
 
@@ -29,13 +28,13 @@ class UserServiceTest {
     }
 
     @Test
-    void calculateQuote() {
-        user.setAdditionalDrivers("3");
-        user.setEngineSize("1000");
-        user.setCurrentValue(5000);
+    void calculateCorrectQuoteValueOf_203_28() {
         user.setVehicleType("Coupe");
+        user.setEngineSize("1000");
+        user.setAdditionalDrivers("3");
         user.setUsedForCommercial(true);
         user.setUsedOutsideState(true);
+        user.setCurrentValue(5000);
 
         double expectedResult = 203.28;
         double actualResult = userService.calculateQuote(user);
@@ -43,4 +42,37 @@ class UserServiceTest {
         assertEquals(expectedResult,actualResult);
 
     }
+
+    @Test
+    void calculateCorrectQuoteValueOf_371_71() {
+        user.setVehicleType("Hatchback");
+        user.setEngineSize("1600");
+        user.setAdditionalDrivers("2");
+        user.setUsedForCommercial(true);
+        user.setUsedOutsideState(true);
+        user.setCurrentValue(5000);
+
+        double expectedResult = 371.71;
+        double actualResult = userService.calculateQuote(user);
+
+        assertEquals(expectedResult,actualResult);
+
+    }
+
+    @Test
+    void calculateCorrectQuoteValueOf_514_80() {
+        user.setVehicleType("Cabriolet");
+        user.setEngineSize("3000");
+        user.setAdditionalDrivers("0");
+        user.setUsedForCommercial(false);
+        user.setUsedOutsideState(false);
+        user.setCurrentValue(15000);
+
+        double expectedResult = 514.80;
+        double actualResult = userService.calculateQuote(user);
+
+        assertEquals(expectedResult,actualResult);
+
+    }
+
 }
