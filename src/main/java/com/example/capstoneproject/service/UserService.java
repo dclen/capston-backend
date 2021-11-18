@@ -37,7 +37,7 @@ public class UserService {
         return totalQuote;
     }
 
-    private double calculateVehicleTypeFactor(User user){
+    public double calculateVehicleTypeFactor(User user){
 
         double vehicleTypeFactor = 0.0;
 
@@ -64,7 +64,7 @@ public class UserService {
         return vehicleTypeFactor;
     }
 
-    private double calculateEngineSizeFactor(User user){
+    public double calculateEngineSizeFactor(User user){
         String engineType = user.getEngineSize().toLowerCase(Locale.ROOT);
 
         double engineTypeFactor = 0.0;
@@ -92,7 +92,7 @@ public class UserService {
         return engineTypeFactor;
     }
 
-    private double calculateVehicleValueFactor(User user){
+    public double calculateVehicleValueFactor(User user){
         double vehicleValue = user.getCurrentValue();
         double vehicleValueFactor;
 
@@ -106,7 +106,7 @@ public class UserService {
         return vehicleValueFactor;
     }
 
-    private double calculateCommercialUseFactor(User user){
+    public double calculateCommercialUseFactor(User user){
         Boolean commercialUseValue = user.getUsedForCommercial();
         double commercialUseFactor;
 
@@ -120,7 +120,7 @@ public class UserService {
         return commercialUseFactor;
     }
 
-    private double calculateOutsideStateUseFactor(User user){
+    public double calculateOutsideStateUseFactor(User user){
         Boolean outsideStateUseValue = user.getUsedOutsideState();
         double outsideStateUseFactor;
 
@@ -134,7 +134,7 @@ public class UserService {
         return outsideStateUseFactor;
     }
 
-    private double calculateAdditionalDriversFactor(User user){
+    public double calculateAdditionalDriversFactor(User user){
         String additionalDriversValue = user.getAdditionalDrivers().toLowerCase(Locale.ROOT);
 
         double additionalDriversFactor;
