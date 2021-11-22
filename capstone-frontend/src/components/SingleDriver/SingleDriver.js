@@ -10,7 +10,7 @@ function SingleDriver() {
   const [showTable, setShowTable] = useState(false);
 
   function callMockAPIWithAxiosGET(id) {
-    const endpointURL = `https://6151d1834a5f22001701d461.mockapi.io/api/v1/people/${id}`;
+    const endpointURL = `http://localhost:8080/capstone/${id}`;
     axios
       .get(endpointURL)
       .then((response) => setTableData(response.data))

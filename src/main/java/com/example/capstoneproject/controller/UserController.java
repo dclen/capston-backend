@@ -5,6 +5,7 @@ import com.example.capstoneproject.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -20,6 +21,13 @@ public class UserController {
     List<User> getAll() {
         return service.getAll();
     }
+
+    @GetMapping("/capstone/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
+    Optional<User> getUser(@PathVariable Long id) {
+        return service.getUser(id);
+    }
+
 
     @PostMapping("/capstone")
     User save(@RequestBody User user) {
