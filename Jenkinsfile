@@ -1,4 +1,4 @@
-def projectName = 'demo-react-spring'
+def projectName = 'capstone-react-spring'
 def version = "0.0.${currentBuild.number}"
 def dockerImageTag = "${projectName}:${version}"
 
