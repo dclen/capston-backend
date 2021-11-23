@@ -380,7 +380,7 @@ function Create() {
                 variant="contained"
                 onClick={() => getQuoteFromAPI()}
               >
-                Retrieve Quote
+                Get Quote
               </Button>
             </Box>
             {finalQuoteAmount}
