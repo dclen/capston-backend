@@ -15,6 +15,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import SERVER_URL from "../../utils/constants";
 import Stack from "@mui/material/Stack";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -102,7 +103,7 @@ function Create() {
     };
 
     const endpointURL =
-      "http://localhost:8080/capstone/calculatequote";
+        `${SERVER_URL}/capstone/calculatequote`;
     axios
       .get(endpointURL, {params: formData})
       .then((response) => setFinalQuoteAmount(response.data))
