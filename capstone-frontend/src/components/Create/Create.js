@@ -13,6 +13,11 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import FormHelperText from "@mui/material/FormHelperText";
+import Stack from '@mui/material/Stack';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from '@mui/lab/DatePicker';
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import SERVER_URL from "../../utils/constants";
@@ -32,13 +37,44 @@ function Create() {
     const [usedForCommercial, setUsedForCommercial] = useState(null);
     const [usedOutsideState, setUsedOutsideState] = useState(null);
     const [currentValue, setCurrentValue] = useState(0);
-    const [firstRegistered, setFirstRegistered] = useState(new Date());
+    const [dateRegistered, setDateRegistered] = useState(new Date());
     const [finalQuoteAmount, setFinalQuoteAmount] = useState(0);
 
-    const [errors, setErrors] = useState({prefixError: "", firstNameError: "", lastNameError: "", telephoneNumberError: ""});
     const [enableButton, setEnableButton] = useState(false);
 
-    const firstRender = useRef({enableButton: true, prefix:true, firstName: true, lastName: true, telephoneNumber: true});
+    const [errors, setErrors] = useState({
+        prefixError: "",
+        firstNameError: "",
+        lastNameError: "",
+        telephoneNumberError: "",
+        addressLine1Error: "",
+        cityError: "",
+        postcodeError: "",
+        vehicleTypeError: "",
+        engineSizeError: "",
+        usedForCommercialError: "",
+        usedOutsideStateError: "",
+        currentValueError: "",
+        dateRegisteredError: ""
+
+    });
+
+    const firstRender = useRef({
+        enableButton: true,
+        prefix: true,
+        firstName: true,
+        lastName: true,
+        telephoneNumber: true,
+        addressLine1: true,
+        city: true,
+        postcode: true,
+        vehicleType: true,
+        engineSize: true,
+        usedForCommercial: true,
+        usedOutsideState: true,
+        currentValue: true,
+        dateRegistered: true
+    });
 
     let history = useHistory();
 
@@ -92,9 +128,111 @@ function Create() {
         }
     }
 
+    function displayAddressLine1Errors() {
+        if (!addressLine1) {
+            setErrors(prevState => ({...prevState, addressLine1Error: "Address Required"}))
+            return true;
+        } else {
+            setErrors(prevState => ({...prevState, addressLine1Error: ""}))
+            return false;
+        }
+    }
+
+    function displayCityErrors() {
+        if (!addressLine1) {
+            setErrors(prevState => ({...prevState, cityError: "City Required"}))
+            return true;
+        } else {
+            setErrors(prevState => ({...prevState, cityError: ""}))
+            return false;
+        }
+    }
+
+    function displayPostcodeErrors() {
+        const postcodeRegex = /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/
+        if (!postcode) {
+            setErrors(prevState => ({...prevState, postcodeError: "Postcode Required"}))
+            return true;
+        } else if (!postcodeRegex.test(postcode)) {
+            setErrors(prevState => ({...prevState, postcodeError: "Enter Valid Postcode"}))
+            return true;
+        } else {
+            setErrors(prevState => ({...prevState, postcodeError: ""}))
+            return false;
+        }
+    }
+
+    function displayVehicleTypeErrors() {
+        if (!vehicleType) {
+            setErrors(prevState => ({...prevState, vehicleTypeError: "Vehicle Type Required"}))
+            return true;
+        } else {
+            setErrors(prevState => ({...prevState, vehicleTypeError: ""}))
+            return false;
+        }
+    }
+
+    function displayEngineSizeErrors() {
+        if (!engineSize) {
+            setErrors(prevState => ({...prevState, engineSizeError: "Engine Size Required"}))
+            return true;
+        } else {
+            setErrors(prevState => ({...prevState, engineSizeError: ""}))
+            return false;
+        }
+    }
+
+    function displayUsedForCommercialErrors() {
+        if (!usedForCommercial) {
+            setErrors(prevState => ({...prevState, usedForCommercialError: "One Option Required"}))
+            return true;
+        } else {
+            setErrors(prevState => ({...prevState, usedForCommercialError: ""}))
+            return false;
+        }
+    }
+
+    function displayUsedOutsideStateErrors() {
+        if (!usedOutsideState) {
+            setErrors(prevState => ({...prevState, usedOutsideStateError: "One Option Required"}))
+            return true;
+        } else {
+            setErrors(prevState => ({...prevState, usedOutsideStateError: ""}))
+            return false;
+        }
+    }
+
+    function displayCurrentValueErrors() {
+        if (!currentValue) {
+            setErrors(prevState => ({...prevState, currentValueError: "Value Required"}))
+            return true;
+        } else if (currentValue > 50000 || currentValue <= 0) {
+            setErrors(prevState => ({...prevState, currentValueError: "Must be between 0 - 50000"}))
+            return true;
+        } else {
+            setErrors(prevState => ({...prevState, currentValueError: ""}))
+            return false;
+        }
+    }
+
+    function displayDateRegisteredErrors() {
+        let today = new Date();
+        today.setHours(0, 0, 0, 0)
+        if (!dateRegistered) {
+            setErrors(prevState => ({...prevState, dateRegisteredError: "Date Required"}))
+            return true;
+        } else if (dateRegistered >= today) {
+            setErrors(prevState => ({...prevState, dateRegisteredError: "Date must be earlier than today"}))
+            return true;
+        } else {
+            setErrors(prevState => ({...prevState, dateRegisteredError: ""}))
+            return false;
+        }
+    }
+
     useEffect(
         () => {
-            if (errors.firstNameError || errors.lastNameError) {
+            if (Object.keys(errors).some(indexOfError => errors[indexOfError])) {
                 setEnableButton(false)
             } else {
                 setEnableButton(true)
@@ -137,6 +275,87 @@ function Create() {
             displayTelephoneNumberErrors();
         }, [telephoneNumber])
 
+    useEffect(
+        () => {
+            if (firstRender.current.addressLine1) {
+                firstRender.current.addressLine1 = false
+                return
+            }
+            displayAddressLine1Errors();
+        }, [addressLine1])
+
+    useEffect(
+        () => {
+            if (firstRender.current.city) {
+                firstRender.current.city = false
+                return
+            }
+            displayCityErrors();
+        }, [city])
+
+    useEffect(
+        () => {
+            if (firstRender.current.postcode) {
+                firstRender.current.postcode = false
+                return
+            }
+            displayPostcodeErrors();
+        }, [postcode])
+
+    useEffect(
+        () => {
+            if (firstRender.current.vehicleType) {
+                firstRender.current.vehicleType = false
+                return
+            }
+            displayVehicleTypeErrors();
+        }, [vehicleType])
+
+    useEffect(
+        () => {
+            if (firstRender.current.engineSize) {
+                firstRender.current.engineSize = false
+                return
+            }
+            displayEngineSizeErrors();
+        }, [engineSize])
+
+    useEffect(
+        () => {
+            if (firstRender.current.usedForCommercial) {
+                firstRender.current.usedForCommercial = false
+                return
+            }
+            displayUsedForCommercialErrors();
+        }, [usedForCommercial])
+
+    useEffect(
+        () => {
+            if (firstRender.current.usedOutsideState) {
+                firstRender.current.usedOutsideState = false
+                return
+            }
+            displayUsedOutsideStateErrors();
+        }, [usedOutsideState])
+
+    useEffect(
+        () => {
+            if (firstRender.current.currentValue) {
+                firstRender.current.currentValue = false
+                return
+            }
+            displayCurrentValueErrors();
+        }, [currentValue])
+
+    useEffect(
+        () => {
+            if (firstRender.current.dateRegistered) {
+                firstRender.current.dateRegistered = false
+                return
+            }
+            displayDateRegisteredErrors();
+        }, [dateRegistered])
+
     const prefixSelections = [
         {value: "Mr"},
         {value: "Mrs"},
@@ -170,13 +389,22 @@ function Create() {
         {value: "4"},
     ];
 
-    const getQuoteFromAPI =  async () => {
+    const getQuoteFromAPI = async () => {
         let prefixError = await displayPrefixErrors();
         let firstNameError = await displayFirstNameErrors();
         let lastNameError = await displayLastNameErrors();
         let telephoneNumberError = await displayTelephoneNumberErrors();
+        let addressLine1Error = await displayAddressLine1Errors();
+        let cityError = await displayCityErrors();
+        let postcodeError = await displayPostcodeErrors();
+        let vehicleTypeError = await displayVehicleTypeErrors();
+        let engineSizeError = await displayEngineSizeErrors();
+        let usedForCommercialError = await displayUsedForCommercialErrors();
+        let usedOutsideStateError = await displayUsedOutsideStateErrors();
+        let currentValueError = await displayCurrentValueErrors();
+        let dateRegisteredError = await displayDateRegisteredErrors();
 
-        if (!prefixError && !firstNameError && !lastNameError && telephoneNumberError) {
+        if (!prefixError && !firstNameError && !lastNameError && !telephoneNumberError && !addressLine1Error && !cityError && !postcodeError && !vehicleTypeError && !engineSizeError && !usedForCommercialError && !usedOutsideStateError && !currentValueError && !dateRegisteredError) {
             const formData = {
                 prefix,
                 firstName,
@@ -192,7 +420,7 @@ function Create() {
                 usedForCommercial,
                 usedOutsideState,
                 currentValue,
-                firstRegistered,
+                dateRegistered
             };
             const endpointURL =
                 `${SERVER_URL}/capstone/calculatequote`;
@@ -208,7 +436,7 @@ function Create() {
             <Box
                 component="form"
                 noValidate
-                autoComplete="off"
+                autoComplete="on"
                 sx={{
                     "& .MuiTextField-root": {m: 1},
                     "& .MuiFormControl-root": {m: 1}
@@ -285,12 +513,13 @@ function Create() {
                                 label="Address Line 1"
                                 name="addressLine1"
                                 placeholder="Address Line 1"
+                                error={errors.addressLine1Error}
+                                helperText={errors.addressLine1Error}
                                 onChange={(e) => setAddressLine1(e.target.value)}
                             />
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
-                                required
                                 fullWidth
                                 id="addressLine2"
                                 label="Address Line 2"
@@ -308,6 +537,8 @@ function Create() {
                                     name="city"
                                     label="City"
                                     placeholder="City"
+                                    error={errors.cityError}
+                                    helperText={errors.cityError}
                                     onChange={(e) => setCity(e.target.value)}
                                 />
                             </Grid>
@@ -319,6 +550,8 @@ function Create() {
                                     label="Postcode"
                                     name="postcode"
                                     placeholder="Postcode"
+                                    error={errors.postcodeError}
+                                    helperText={errors.postcodeError}
                                     onChange={(e) => setPostcode(e.target.value)}
                                 />
                             </Grid>
@@ -337,6 +570,8 @@ function Create() {
                                     label="Vehicle Type"
                                     name="vehicleType"
                                     placeholder="Vehicle Type"
+                                    error={errors.vehicleTypeError}
+                                    helperText={errors.vehicleTypeError}
                                     onChange={(e) => setVehicleType(e.target.value)}
                                 >
                                     {vehicleTypeSelections.map((option) => (
@@ -355,6 +590,8 @@ function Create() {
                                     label="Engine Size"
                                     name="engineSize"
                                     placeholder="Engine Size"
+                                    error={errors.engineSizeError}
+                                    helperText={errors.engineSizeError}
                                     onChange={(e) => setEngineSize(e.target.value)}
                                 >
                                     {engineSizeSelections.map((option) => (
@@ -385,13 +622,15 @@ function Create() {
                         </Grid>
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
-                                <FormControl component="fieldset">
+                                <FormControl component="fieldset" error={errors.usedForCommercialError} >
                                     <FormLabel component="legend">
                                         Will the vehicle be used for commercial purposes?*
                                     </FormLabel>
+                                    <FormHelperText>{errors.usedForCommercialError}</FormHelperText>
+
                                     <RadioGroup
                                         row
-                                        aria-label="commercial"
+                                        aria-label="used for commercial"
                                         name="controlled-radio-buttons-group"
                                         value={usedForCommercial}
                                         onChange={(e) => setUsedForCommercial(e.target.value)}
@@ -410,15 +649,19 @@ function Create() {
                                 </FormControl>
                             </Grid>
                             <Grid item xs={4}>
-                                <FormControl component="fieldset">
+                                <FormControl component="fieldset" error={errors.usedOutsideStateError}>
                                     <FormLabel component="legend">
                                         Will the vehicle be used outside the registered state?*
                                     </FormLabel>
+                                   <FormHelperText>{errors.usedOutsideStateError}</FormHelperText>
+
                                     <RadioGroup
                                         row
-                                        aria-label="commercial"
+                                        aria-label="used outside state"
                                         name="controlled-radio-buttons-group"
                                         value={usedOutsideState}
+
+                                        helperText={errors.usedOutsideStateError}
                                         onChange={(e) => setUsedOutsideState(e.target.value)}
                                     >
                                         <FormControlLabel
@@ -435,29 +678,45 @@ function Create() {
                                 </FormControl>
                             </Grid>
                         </Grid>
+                        <Grid container spacing={2}>
+                            <Grid item xs={4}>
 
-                        <TextField
-                            required
-                            fullWidth
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">£</InputAdornment>
-                                ),
-                            }}
-                            label="Vehicle Value"
-                            type="number"
-                            placeholder="Vehicle Value"
-                            onChange={(e) => setCurrentValue(e.target.value)}
-                        />
+                                <TextField
+                                    required
+                                    fullWidth
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">£</InputAdornment>
+                                        ),
+                                    }}
+                                    label="Vehicle Value"
+                                    type="number"
+                                    placeholder="Vehicle Value"
+                                    error={errors.currentValueError}
+                                    helperText={errors.currentValueError}
+                                    onChange={(e) => setCurrentValue(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
 
-                        <TextField
-                            required
-                            fullWidth
-                            InputLabelProps={{shrink: true}}
-                            label="Date registered"
-                            type="date"
-                            onChange={(e) => setFirstRegistered(e.target.value)}
-                        />
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <Stack spacing={3}>
+                                        <DatePicker
+                                            required
+                                            label="Date First Registered"
+                                            inputFormat="dd/MM/yyyy"
+                                            value={dateRegistered}
+                                            onChange={(e) => setDateRegistered(e)}
+                                            renderInput={(params) => <TextField
+                                                {...params}
+                                                error={errors.dateRegisteredError}
+                                                helperText={errors.dateRegisteredError}
+                                            />}
+                                        />
+                                    </Stack>
+                                </LocalizationProvider>
+                            </Grid>
+                        </Grid>
 
                         <Box
                             sx={{
@@ -471,7 +730,7 @@ function Create() {
                                 disabled={!enableButton}
                                 onClick={() => getQuoteFromAPI()}
                             >
-                                {enableButton?"Get Quote":"Check Fields"}
+                                {enableButton ? "Get Quote" : "Check Fields"}
                             </Button>
                         </Box>
                         {finalQuoteAmount}
