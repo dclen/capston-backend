@@ -35,30 +35,46 @@ function Create() {
     const [firstRegistered, setFirstRegistered] = useState(new Date());
     const [finalQuoteAmount, setFinalQuoteAmount] = useState(0);
 
-    const [errors, setErrors] = useState({firstNameError: "", lastNameError: ""});
+    const [errors, setErrors] = useState({prefixError: "", firstNameError: "", lastNameError: ""});
     const [enableButton, setEnableButton] = useState(false);
 
-    const firstRender = useRef({enableButton: true, firstName: true, lastName: true});
+    const firstRender = useRef({enableButton: true, prefix:true, firstName: true, lastName: true});
 
     let history = useHistory();
+
+    function displayPrefixErrors() {
+        if (!prefix) {
+            setErrors(prevState => ({...prevState, prefixError: "Prefix Required"}))
+            return true;
+        } else {
+            setErrors(prevState => ({...prevState, prefixError: ""}))
+            return false;
+        }
+    }
 
     function displayFirstNameErrors() {
         if (!firstName) {
             setErrors(prevState => ({...prevState, firstNameError: "Name Required"}))
+            return true;
         } else if (firstName.length > 20) {
             setErrors(prevState => ({...prevState, firstNameError: "Name Too Long"}))
+            return true;
         } else {
             setErrors(prevState => ({...prevState, firstNameError: ""}))
+            return false;
         }
     }
 
     function displayLastNameErrors() {
         if (!lastName) {
             setErrors(prevState => ({...prevState, lastNameError: "Last Name Required"}))
+            return true;
         } else if (lastName.length > 20) {
             setErrors(prevState => ({...prevState, lastNameError: "Last Name Too Long"}))
+            return true;
         } else {
             setErrors(prevState => ({...prevState, lastNameError: ""}))
+            return false;
         }
     }
 
@@ -73,12 +89,20 @@ function Create() {
 
     useEffect(
         () => {
+            if (firstRender.current.prefix) {
+                firstRender.current.prefix = false
+                return
+            }
+            displayPrefixErrors();
+        }, [prefix])
+
+    useEffect(
+        () => {
             if (firstRender.current.firstName) {
                 firstRender.current.firstName = false
                 return
             }
             displayFirstNameErrors();
-
         }, [firstName])
 
     useEffect(
@@ -86,11 +110,6 @@ function Create() {
             if (firstRender.current.lastName) {
                 firstRender.current.lastName = false
                 return
-            }
-            if (!lastName) {
-                setErrors(prevState => ({...prevState, lastNameError: "Last Name Required"}))
-            } else {
-                setErrors(prevState => ({...prevState, lastNameError: ""}))
             }
             displayLastNameErrors();
         }, [lastName])
@@ -128,16 +147,12 @@ function Create() {
         {value: "4"},
     ];
 
-    const handleSubmit = async () => {
-        displayFirstNameErrors();
-        displayLastNameErrors();
-        await getQuoteFromAPI();
-    };
-
     const getQuoteFromAPI =  async () => {
-        if (!errors.firstNameError) {
-            console.log("im called")
+        let prefixError = await displayPrefixErrors();
+        let firstNameError = await displayFirstNameErrors();
+        let lastNameError = await displayLastNameErrors();
 
+        if (!prefixError && !firstNameError && !lastNameError) {
             const formData = {
                 prefix,
                 firstName,
@@ -174,7 +189,6 @@ function Create() {
                     "& .MuiTextField-root": {m: 1},
                     "& .MuiFormControl-root": {m: 1}
                 }}
-                onSubmit={handleSubmit}
             >
                 <Card sx={{minWidth: 275}}>
                     <CardContent>
@@ -188,6 +202,8 @@ function Create() {
                                     value={prefix}
                                     label="Prefix"
                                     placeholder="Prefix"
+                                    error={errors.prefixError}
+                                    helperText={errors.prefixError}
                                     onChange={(e) => setPrefix(e.target.value)}
                                 >
                                     {prefixSelections.map((option) => (
@@ -427,9 +443,9 @@ function Create() {
                                 size="large"
                                 variant="contained"
                                 disabled={!enableButton}
-                                onClick={() => handleSubmit()}
+                                onClick={() => getQuoteFromAPI()}
                             >
-                                Get Quote
+                                {enableButton?"Get Quote":"Check Fields"}
                             </Button>
                         </Box>
                         {finalQuoteAmount}
