@@ -429,7 +429,37 @@ function Create() {
                 .then((response) => setFinalQuoteAmount(response.data))
                 .catch((err) => console.log(err));
         }
-    };
+    }
+
+
+    const saveUser = () => {
+
+            const formData = {
+                prefix,
+                firstName,
+                lastName,
+                telephoneNumber,
+                addressLine1,
+                addressLine2,
+                city,
+                postcode,
+                vehicleType,
+                engineSize,
+                additionalDrivers,
+                usedForCommercial,
+                usedOutsideState,
+                currentValue,
+                dateRegistered
+            };
+            const endpointURL =
+                `${SERVER_URL}/capstone`;
+            axios
+                .post(endpointURL, formData)
+                // .then((response) => setFinalQuoteAmount(response.data))
+                .catch((err) => console.log(err));
+        }
+    ;
+
 
     return (
         <div className="create">
@@ -622,7 +652,7 @@ function Create() {
                         </Grid>
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
-                                <FormControl component="fieldset" error={errors.usedForCommercialError} >
+                                <FormControl component="fieldset" error={errors.usedForCommercialError}>
                                     <FormLabel component="legend">
                                         Will the vehicle be used for commercial purposes?*
                                     </FormLabel>
@@ -653,7 +683,7 @@ function Create() {
                                     <FormLabel component="legend">
                                         Will the vehicle be used outside the registered state?*
                                     </FormLabel>
-                                   <FormHelperText>{errors.usedOutsideStateError}</FormHelperText>
+                                    <FormHelperText>{errors.usedOutsideStateError}</FormHelperText>
 
                                     <RadioGroup
                                         row
@@ -696,6 +726,7 @@ function Create() {
                                     helperText={errors.currentValueError}
                                     onChange={(e) => setCurrentValue(e.target.value)}
                                 />
+                                {currentValue}
                             </Grid>
                             <Grid item xs={4}>
 
@@ -732,6 +763,15 @@ function Create() {
                             >
                                 {enableButton ? "Get Quote" : "Check Fields"}
                             </Button>
+                            <Button
+                                size="large"
+                                variant="contained"
+                                disabled={!enableButton}
+                                onClick={() => saveUser()}
+                            >
+                                {enableButton ? "Save User" : "Check Fields"}
+                            </Button>
+
                         </Box>
                         {finalQuoteAmount}
                     </CardContent>

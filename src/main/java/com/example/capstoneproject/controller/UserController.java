@@ -30,6 +30,7 @@ public class UserController {
 
 
     @PostMapping("/capstone")
+    @CrossOrigin(origins = "http://localhost:3000")
     User save(@RequestBody User user) {
         return service.save(user);
     }
