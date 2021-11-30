@@ -35,10 +35,10 @@ function Create() {
     const [firstRegistered, setFirstRegistered] = useState(new Date());
     const [finalQuoteAmount, setFinalQuoteAmount] = useState(0);
 
-    const [errors, setErrors] = useState({prefixError: "", firstNameError: "", lastNameError: ""});
+    const [errors, setErrors] = useState({prefixError: "", firstNameError: "", lastNameError: "", telephoneNumberError: ""});
     const [enableButton, setEnableButton] = useState(false);
 
-    const firstRender = useRef({enableButton: true, prefix:true, firstName: true, lastName: true});
+    const firstRender = useRef({enableButton: true, prefix:true, firstName: true, lastName: true, telephoneNumber: true});
 
     let history = useHistory();
 
@@ -74,6 +74,20 @@ function Create() {
             return true;
         } else {
             setErrors(prevState => ({...prevState, lastNameError: ""}))
+            return false;
+        }
+    }
+
+    function displayTelephoneNumberErrors() {
+        const telephoneNumberRegex = /^(((\+44\s?\d{4}|\(?0\d{4}\)?)\s?\d{3}\s?\d{3})|((\+44\s?\d{3}|\(?0\d{3}\)?)\s?\d{3}\s?\d{4})|((\+44\s?\d{2}|\(?0\d{2}\)?)\s?\d{4}\s?\d{4}))(\s?\#(\d{4}|\d{3}))?$/
+        if (!telephoneNumber) {
+            setErrors(prevState => ({...prevState, telephoneNumberError: "Telephone Number Required"}))
+            return true;
+        } else if (!telephoneNumberRegex.test(telephoneNumber)) {
+            setErrors(prevState => ({...prevState, telephoneNumberError: "Enter Valid Phone Number"}))
+            return true;
+        } else {
+            setErrors(prevState => ({...prevState, telephoneNumberError: ""}))
             return false;
         }
     }
@@ -114,6 +128,15 @@ function Create() {
             displayLastNameErrors();
         }, [lastName])
 
+    useEffect(
+        () => {
+            if (firstRender.current.telephoneNumber) {
+                firstRender.current.telephoneNumber = false
+                return
+            }
+            displayTelephoneNumberErrors();
+        }, [telephoneNumber])
+
     const prefixSelections = [
         {value: "Mr"},
         {value: "Mrs"},
@@ -151,8 +174,9 @@ function Create() {
         let prefixError = await displayPrefixErrors();
         let firstNameError = await displayFirstNameErrors();
         let lastNameError = await displayLastNameErrors();
+        let telephoneNumberError = await displayTelephoneNumberErrors();
 
-        if (!prefixError && !firstNameError && !lastNameError) {
+        if (!prefixError && !firstNameError && !lastNameError && telephoneNumberError) {
             const formData = {
                 prefix,
                 firstName,
@@ -248,6 +272,8 @@ function Create() {
                                 label="Telephone Number"
                                 name="telephoneNumber"
                                 placeholder="Telephone Number"
+                                error={errors.telephoneNumberError}
+                                helperText={errors.telephoneNumberError}
                                 onChange={(e) => setTelephoneNumber(e.target.value)}
                             />
                         </Grid>
