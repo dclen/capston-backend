@@ -1,7 +1,7 @@
 import "./App.css";
 import Create from "./components/Create/Create";
 import Read from "./components/Read/Read";
-import Update from "./components/Update/Update";
+import Update from "./components/Update/UpdateDriver";
 import AdminForm from "./components/AdminForm/AdminForm";
 import { Container } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -21,8 +22,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> getUser(Long id) {
-        return userRepository.findById(id);
+    public User getUser(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("No person with id" + id));
+
     }
 
     public User save(User user) {

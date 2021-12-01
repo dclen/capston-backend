@@ -82,9 +82,10 @@ public class UserControllerTest {
         var outsideRegisteredState = true;
         var currentValue = 10000;
         var dateRegistered = "10/10/2021";
+        var finalQuoteAmount = 300.21;
 
 
-        var user = new User(null, prefix, firstName, lastName, telephoneNumber, addressLine1, addressLine2, city, postcode, vehicleType, engineSize, additionalDrivers, commercialPurpose, outsideRegisteredState, currentValue, dateRegistered);
+        var user = new User(null, prefix, firstName, lastName, telephoneNumber, addressLine1, addressLine2, city, postcode, vehicleType, engineSize, additionalDrivers, commercialPurpose, outsideRegisteredState, currentValue, dateRegistered, finalQuoteAmount);
         var userAsString = objectMapper.writeValueAsString(user);
 
         final var mvcResult = mockMvc
@@ -117,7 +118,8 @@ public class UserControllerTest {
                 () -> assertEquals(commercialPurpose, userFromDB.getUsedForCommercial()),
                 () -> assertEquals(outsideRegisteredState, userFromDB.getUsedOutsideState()),
                 () -> assertEquals(currentValue, userFromDB.getCurrentValue()),
-                () -> assertEquals(dateRegistered, userFromDB.getDateRegistered())
+                () -> assertEquals(dateRegistered, userFromDB.getDateRegistered()),
+                () -> assertEquals(finalQuoteAmount, userFromDB.getFinalQuoteAmount())
         );
     }
 }

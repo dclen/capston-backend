@@ -33,5 +33,6 @@ public class User {
     private Boolean usedOutsideState;
     private double currentValue;
     private String dateRegistered;
+    private double finalQuoteAmount;
 
 }
