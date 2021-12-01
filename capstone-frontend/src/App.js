@@ -7,7 +7,7 @@ import { Container } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import { BrowserRouter, Route } from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar";
-import SingleDriver from "./components/SingleDriver/SingleDriver";
+import DisplayDriver from "./components/DisplayDriver/DisplayDriver";
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
             <Route  path="/admin" component={AdminForm} />
           </div>
           <div>
-            <Route  path="/singledriver" component={SingleDriver} />
+            <Route  path="/singledriver" component={DisplayDriver} />
           </div>
 
           <div style={{ marginTop: 25 }}>

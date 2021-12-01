@@ -469,6 +469,7 @@ function Create() {
                 autoComplete="on"
                 sx={{
                     "& .MuiTextField-root": {m: 1},
+                    "& .MuiCard-root": {mb: 2},
                     "& .MuiFormControl-root": {m: 1}
                 }}
             >
@@ -726,7 +727,6 @@ function Create() {
                                     helperText={errors.currentValueError}
                                     onChange={(e) => setCurrentValue(e.target.value)}
                                 />
-                                {currentValue}
                             </Grid>
                             <Grid item xs={4}>
 
@@ -766,6 +766,7 @@ function Create() {
                             <Button
                                 size="large"
                                 variant="contained"
+                                color = "success"
                                 disabled={!enableButton}
                                 onClick={() => saveUser()}
                             >

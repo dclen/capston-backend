@@ -1,87 +1,127 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "./AdminForm.css";
-import { Button, Form, Input } from "semantic-ui-react";
-import SingleDriver from "../SingleDriver/SingleDriver";
+import Button from "@mui/material/Button";
+import DisplayDriver from "../DisplayDriver/DisplayDriver";
 import axios from "axios";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import {Typography} from "@mui/material";
 
 function AdminForm() {
-  const [driverIdDelete, setDriverIdDelete] = useState("");
-  const [driverIdUpdate, setDriverIdUpdate] = useState("");
-  const [telephoneNumber, setTelephoneNumber] = useState("");
+    const [driverId, setDriverId] = useState(null);
+    const [driverDetails, setDriverDetails] = useState([]);
+    const [isDriverShown, setIsDriverShown] = useState(false);
+    const [isDriverIdFound, setIsDriverIdFound]= useState(false)
+    const [driverIdDelete, setDriverIdDelete] = useState("");
+    const [driverIdUpdate, setDriverIdUpdate] = useState("");
+    const [telephoneNumber, setTelephoneNumber] = useState("");
 
-  function onDelete(id) {
-    const endpointURL = `https://6151d1834a5f22001701d461.mockapi.io/api/v1/people/${id}`;
-    axios
-      .delete(endpointURL)
-      .then(alert(`Driver ${id} Deleted`))
-      .then(setDriverIdDelete(""))
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+    function getDriverDetailsFromAPI(driverId) {
+        const endpointURL = `http://localhost:8080/capstone/${driverId}`;
+        axios
+            .get(endpointURL)
+            .then((response) => {
+                    if (response.data != null) {
+                        setDriverDetails(response.data)
+                        setIsDriverIdFound(true)
+                    }else{
+                        setIsDriverShown(true)
+                        setIsDriverIdFound(false);
+                    }
+                }
+            )
+            .catch(() => {
+            }
+            );
+    }
 
-  function onUpdate(id, phone) {
-    const endpointURL = `https://6151d1834a5f22001701d461.mockapi.io/api/v1/people/${id}`;
-    axios
-      .put(endpointURL, { telephoneNumber: phone })
-      .then(alert(`Driver ${id} Phone Updated to ${telephoneNumber}`))
-      .then(setDriverIdUpdate(""))
-      .then(setTelephoneNumber(""))
-      .catch((err) => {
-        console.log(err);
-      });
-  }
 
-  return (
-    <div className="admin">
-      <SingleDriver />
-      <Form size="big">
-        <Form.Group>
-          <Form.Field inline>
-            <label>Delete Driver</label>
-            <input
-              placeholder="Driver ID"
-              onChange={(e) => setDriverIdDelete(e.target.value)}
-              value={driverIdDelete}
-            />
-          </Form.Field>
-          <Button
-            color="red"
-            type="submit"
-            onClick={() => onDelete(driverIdDelete)}
-          >
-            Delete Driver
-          </Button>
-        </Form.Group>
-      </Form>
-      <Form size="big">
-        <Form.Group>
-          <Form.Field inline>
-            <label>Update Phone</label>
-            <input
-              placeholder="Driver ID"
-              onChange={(e) => setDriverIdUpdate(e.target.value)}
-              value={driverIdUpdate}
+    function onDelete(id) {
+        const endpointURL = `https://6151d1834a5f22001701d461.mockapi.io/api/v1/people/${id}`;
+        axios
+            .delete(endpointURL)
+            .then(alert(`Driver ${id} Deleted`))
+            .then(setDriverIdDelete(""))
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
-            />
-            <input
-              placeholder="Phone no."
-              onChange={(e) => setTelephoneNumber(e.target.value)}
-              value={telephoneNumber}
+    function onUpdate(id, phone) {
+        const endpointURL = `https://6151d1834a5f22001701d461.mockapi.io/api/v1/people/${id}`;
+        axios
+            .put(endpointURL, {telephoneNumber: phone})
+            .then(alert(`Driver ${id} Phone Updated to ${telephoneNumber}`))
+            .then(setDriverIdUpdate(""))
+            .then(setTelephoneNumber(""))
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
-            />
-          </Form.Field>
-          <Button
-            color="green"
-            type="submit"
-            onClick={() => onUpdate(driverIdUpdate, telephoneNumber)}
-          >
-            Update
-          </Button>
-        </Form.Group>
-      </Form>
-    </div>
-  );
+    return (
+        <div className="admin">
+            <Box
+                component="form"
+                noValidate
+                autoComplete="off"
+                sx={{
+                    justifyContent: "center",
+                    "& .MuiTextField-root": {m: 1},
+                    "& .MuiButton-root": {m: 1},
+                    "& .MuiCard-root": {mb: 2},
+                    "& .MuiTypography-root": {m: 1, justifyContent: "center"}
+                }}
+            >
+                <Card sx={{minWidth: 275}}>
+                    <CardContent>
+                            <Grid container justifyContent="center" >
+                        <Typography variant="h4" component="h1" >
+                            Please Enter Driver ID
+                        </Typography>
+                            </Grid>
+                        <Grid container spacing={2} justifyContent="center">
+                            <Grid item xs={3}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="driverId"
+                                    label="Driver ID"
+                                    placeholder="Driver ID"
+                                    onChange={(e) => setDriverId(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={4} container direction="column" justifyContent="center" >
+                                <Button
+                                    size="large"
+                                    variant="contained"
+                                    onClick={() => getDriverDetailsFromAPI(driverId)}
+                                >
+                                    Find Driver
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </CardContent>
+                </Card>
+                {isDriverIdFound && (<Card sx={{minWidth: 275}}>
+                    <CardContent>
+                            <DisplayDriver driverDetails={driverDetails}/>
+                    </CardContent>
+                </Card>)}
+                {!isDriverIdFound && isDriverShown && (<Card sx={{minWidth: 275}}>
+                    <CardContent>
+                        <Typography variant="h4" component="h1" color="red">
+                            Driver Not Found
+                        </Typography>
+
+                    </CardContent>
+                </Card>)}
+            </Box>
+        </div>
+    );
 }
 
 export default AdminForm;
