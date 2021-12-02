@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import {Link} from "react-router-dom";
+import AdminForm from "../AdminForm/AdminForm";
 
 function NavBar() {
   return (
@@ -13,7 +15,9 @@ function NavBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             AllState Insurance
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Link to={"/admin"}>
+          <Button sx={{color:"white"}} color="inherit">Admin</Button>
+          </Link>
         </Toolbar>
       </AppBar>
     </Box>
