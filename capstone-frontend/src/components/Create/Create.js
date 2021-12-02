@@ -21,6 +21,7 @@ import DatePicker from '@mui/lab/DatePicker';
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import SERVER_URL from "../../utils/constants";
+import {Typography} from "@mui/material";
 
 function Create() {
     const [prefix, setPrefix] = useState("");
@@ -470,11 +471,18 @@ function Create() {
                 sx={{
                     "& .MuiTextField-root": {m: 1},
                     "& .MuiCard-root": {mb: 2},
+                    "& .MuiTypography-root": {m: 1},
                     "& .MuiFormControl-root": {m: 1}
                 }}
             >
                 <Card sx={{minWidth: 275}}>
                     <CardContent>
+                        <Grid container>
+                            <Typography variant="h4" component="h1">
+                                Please Enter Personal Details
+                            </Typography>
+                        </Grid>
+
                         <Grid container spacing={2}>
                             <Grid item xs={2}>
                                 <TextField
@@ -591,8 +599,14 @@ function Create() {
                 </Card>
                 <Card sx={{minWidth: 275}}>
                     <CardContent>
+                        <Grid container >
+                            <Typography variant="h4" component="h1">
+                                Please Enter Car Details
+                            </Typography>
+                        </Grid>
+
                         <Grid container spacing={1}>
-                            <Grid item xs={4}>
+                            <Grid item xs={5}>
                                 <TextField
                                     required
                                     fullWidth
@@ -612,7 +626,7 @@ function Create() {
                                     ))}
                                 </TextField>
                             </Grid>
-                            <Grid item xs={4}>
+                            <Grid item xs={5}>
                                 <TextField
                                     required
                                     fullWidth
@@ -633,7 +647,7 @@ function Create() {
                                 </TextField>
                             </Grid>
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={5}>
                             <TextField
                                 required
                                 fullWidth
@@ -652,7 +666,7 @@ function Create() {
                             </TextField>
                         </Grid>
                         <Grid container spacing={2}>
-                            <Grid item xs={4}>
+                            <Grid item xs={5}>
                                 <FormControl component="fieldset" error={errors.usedForCommercialError}>
                                     <FormLabel component="legend">
                                         Will the vehicle be used for commercial purposes?*
@@ -679,7 +693,7 @@ function Create() {
                                     </RadioGroup>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={4}>
+                            <Grid item xs={5}>
                                 <FormControl component="fieldset" error={errors.usedOutsideStateError}>
                                     <FormLabel component="legend">
                                         Will the vehicle be used outside the registered state?*
@@ -710,7 +724,7 @@ function Create() {
                             </Grid>
                         </Grid>
                         <Grid container spacing={2}>
-                            <Grid item xs={4}>
+                            <Grid item xs={5}>
 
                                 <TextField
                                     required

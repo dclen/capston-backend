@@ -32,7 +32,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public double calculateQuote(User user){
+    public void delete(User user) {userRepository.delete(user);}
+
+
+        public double calculateQuote(User user){
 
         double totalQuote = 100*calculateVehicleTypeFactor(user)*calculateEngineSizeFactor(user)
                                 *calculateAdditionalDriversFactor(user)
@@ -157,4 +160,6 @@ public class UserService {
 
         return additionalDriversFactor;
     }
+
+
 }

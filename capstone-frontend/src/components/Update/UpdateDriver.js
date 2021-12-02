@@ -9,14 +9,13 @@ import CardContent from "@mui/material/CardContent";
 
 function UpdateDriver(props) {
 
-    const [telephoneNumber, setTelephoneNumber] = useState("");
+    const [telephoneNumber, setTelephoneNumber] = useState(props.driverDetails.telephoneNumber);
 
     function onUpdate(driverId) {
         const endpointURL = `http://localhost:8080/capstone/updatephone/${driverId}`;
         axios
             .put(endpointURL, {telephoneNumber: telephoneNumber})
             .then(() => props.getDriverDetailsFromAPI(props.driverId))
-            .then(()=>setTelephoneNumber(""))
             .catch((err) => {
                 console.log(err);
             });

@@ -10,6 +10,7 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import {Typography} from "@mui/material";
 import UpdateDriver from "../Update/UpdateDriver";
+import DeleteDriver from "../Delete/DeleteDriver";
 
 function AdminForm() {
     const [driverId, setDriverId] = useState(null);
@@ -35,18 +36,6 @@ function AdminForm() {
                 }
             );
     }
-
-
-    function onDelete(id) {
-        const endpointURL = `https://6151d1834a5f22001701d461.mockapi.io/api/v1/people/${id}`;
-        axios
-            .delete(endpointURL)
-            .then(alert(`Driver ${id} Deleted`))
-            .catch((err) => {
-                console.log(err);
-            });
-    }
-
 
     return (
         <div className="admin">
@@ -101,6 +90,11 @@ function AdminForm() {
                                           driverId={driverId}
                                           getDriverDetailsFromAPI={()=>getDriverDetailsFromAPI(driverId)}
                             />
+                            <DeleteDriver
+                                          driverId={driverId}
+                                          getDriverDetailsFromAPI={()=>getDriverDetailsFromAPI(driverId)}
+                            />
+
                         </CardContent>
                     </Card>
                 )}

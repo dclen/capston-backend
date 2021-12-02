@@ -55,6 +55,20 @@ public class UserController {
         return service.save(userToUpdate);
     }
 
+    @DeleteMapping("/capstone/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
+    void delete(@PathVariable Long id) {
+        User userToDelete;
+        try {
+            userToDelete = service.getUser(id);
+        } catch (NoSuchElementException nse) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, ID_NOT_FOUND_ERROR_MSG + id, nse);
+        }
+        service.delete(userToDelete);
+    }
+
+
 
     @GetMapping("/capstone/calculatequote")
     @CrossOrigin(origins = "http://localhost:3000")
