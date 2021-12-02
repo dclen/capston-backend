@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import "./AdminForm.css";
 import Button from "@mui/material/Button";
 import DisplayDriver from "../DisplayDriver/DisplayDriver";
@@ -14,28 +14,62 @@ import DeleteDriver from "../Delete/DeleteDriver";
 import SERVER_URL from "../../utils/constants";
 
 function AdminForm() {
-    const [driverId, setDriverId] = useState(null);
+    const [driverId, setDriverId] = useState("");
     const [driverDetails, setDriverDetails] = useState([]);
     const [isDriverShown, setIsDriverShown] = useState(false);
     const [isDriverIdFound, setIsDriverIdFound] = useState(false)
 
-    function getDriverDetailsFromAPI(driverId) {
-        const endpointURL = `${SERVER_URL}/capstone/${driverId}`;
-        axios
-            .get(endpointURL)
-            .then((response) => {
-                    if (response.status === 200) {
-                        setDriverDetails(response.data)
-                        setIsDriverIdFound(true)
+    const [driverIdError, setDriverIdError] = useState("")
+
+    const firstRender = useRef(true)
+
+    function displayDriverErrors() {
+        const driverIdRegex = /([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])/
+        if (!driverId) {
+            setDriverIdError("Driver ID Required")
+            return true;
+        } else if (!driverIdRegex.test(driverId)) {
+            setDriverIdError("Must be number 1-9999")
+            return true;
+        } else{
+            setDriverIdError("")
+            return false
+        }
+    }
+
+
+    useEffect(
+        () => {
+            if (firstRender.current) {
+                firstRender.current = false
+                return
+            }
+            displayDriverErrors();
+        }, [driverId])
+
+
+    const getDriverDetailsFromAPI = async (driverId) => {
+
+        let driverIdError = await displayDriverErrors();
+
+        if (!driverIdError) {
+            const endpointURL = `${SERVER_URL}/capstone/${driverId}`;
+            axios
+                .get(endpointURL)
+                .then((response) => {
+                        if (response.status === 200) {
+                            setDriverDetails(response.data)
+                            setIsDriverIdFound(true)
+                        }
                     }
-                }
-            )
-            .catch(() => {
-                    console.log("here")
-                    setIsDriverShown(true)
-                    setIsDriverIdFound(false);
-                }
-            );
+                )
+                .catch(() => {
+                        console.log("here")
+                        setIsDriverShown(true)
+                        setIsDriverIdFound(false);
+                    }
+                );
+        }
     }
 
     return (
@@ -67,6 +101,9 @@ function AdminForm() {
                                     id="driverId"
                                     label="Driver ID"
                                     placeholder="Driver ID"
+                                    error={driverIdError}
+                                    helperText={driverIdError}
+                                    onBlur={()=>setIsDriverIdFound(false)}
                                     onChange={(e) => setDriverId(e.target.value)}
                                 />
                             </Grid>
