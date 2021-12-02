@@ -1,11 +1,9 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import {useState, useEffect} from "react";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import CardContent from "@mui/material/CardContent";
 
 function UpdateDriver(props) {
 
@@ -44,7 +42,7 @@ function UpdateDriver(props) {
                     variant="contained"
                     onClick={() => onUpdate(props.driverId)}
                 >
-                    Update Phone Number
+                    Update Phone
                 </Button>
             </Grid>
         </Grid>

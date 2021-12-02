@@ -75,7 +75,7 @@ function AdminForm() {
                                     variant="contained"
                                     onClick={() => getDriverDetailsFromAPI(driverId)}
                                 >
-                                    Find Driver
+                                    Find
                                 </Button>
 
                             </Grid>

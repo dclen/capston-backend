@@ -2,7 +2,6 @@ import "./Create.css";
 import React, {useState, useEffect, useRef} from "react";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
-import {useHistory} from "react-router";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -22,6 +21,7 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import SERVER_URL from "../../utils/constants";
 import {Typography} from "@mui/material";
+import GetQuoteModal from "./Modals/GetQuoteModal";
 
 function Create() {
     const [prefix, setPrefix] = useState("");
@@ -42,6 +42,7 @@ function Create() {
     const [finalQuoteAmount, setFinalQuoteAmount] = useState(0);
 
     const [enableButton, setEnableButton] = useState(false);
+    const [showGetQuoteModal, setShowGetQuoteModal] = useState(false);
 
     const [errors, setErrors] = useState({
         prefixError: "",
@@ -76,8 +77,6 @@ function Create() {
         currentValue: true,
         dateRegistered: true
     });
-
-    let history = useHistory();
 
     function displayPrefixErrors() {
         if (!prefix) {
@@ -428,38 +427,10 @@ function Create() {
             axios
                 .get(endpointURL, {params: formData})
                 .then((response) => setFinalQuoteAmount(response.data))
+                .then(()=>setShowGetQuoteModal(true))
                 .catch((err) => console.log(err));
         }
     }
-
-
-    const saveUser = () => {
-
-            const formData = {
-                prefix,
-                firstName,
-                lastName,
-                telephoneNumber,
-                addressLine1,
-                addressLine2,
-                city,
-                postcode,
-                vehicleType,
-                engineSize,
-                additionalDrivers,
-                usedForCommercial,
-                usedOutsideState,
-                currentValue,
-                dateRegistered
-            };
-            const endpointURL =
-                `${SERVER_URL}/capstone`;
-            axios
-                .post(endpointURL, formData)
-                // .then((response) => setFinalQuoteAmount(response.data))
-                .catch((err) => console.log(err));
-        }
-    ;
 
 
     return (
@@ -599,7 +570,7 @@ function Create() {
                 </Card>
                 <Card sx={{minWidth: 275}}>
                     <CardContent>
-                        <Grid container >
+                        <Grid container>
                             <Typography variant="h4" component="h1">
                                 Please Enter Car Details
                             </Typography>
@@ -705,8 +676,6 @@ function Create() {
                                         aria-label="used outside state"
                                         name="controlled-radio-buttons-group"
                                         value={usedOutsideState}
-
-                                        helperText={errors.usedOutsideStateError}
                                         onChange={(e) => setUsedOutsideState(e.target.value)}
                                     >
                                         <FormControlLabel
@@ -777,18 +746,26 @@ function Create() {
                             >
                                 {enableButton ? "Get Quote" : "Check Fields"}
                             </Button>
-                            <Button
-                                size="large"
-                                variant="contained"
-                                color = "success"
-                                disabled={!enableButton}
-                                onClick={() => saveUser()}
-                            >
-                                {enableButton ? "Save User" : "Check Fields"}
-                            </Button>
-
                         </Box>
-                        {finalQuoteAmount}
+                        <GetQuoteModal
+                            prefix={prefix}
+                            firstName={firstName}
+                            lastName={lastName}
+                            telephoneNumber={telephoneNumber}
+                            addressLine1={addressLine1}
+                            addressLine2={addressLine2}
+                            city={city}
+                            postcode={postcode}
+                            vehicleType={vehicleType}
+                            engineSize={engineSize}
+                            additionalDrivers={additionalDrivers}
+                            usedForCommercial={usedForCommercial}
+                            usedOutsideState={usedOutsideState}
+                            currentValue={currentValue}
+                            dateRegistered={dateRegistered}
+                            finalQuoteAmount={finalQuoteAmount}
+                            showGetQuoteModal={showGetQuoteModal}
+                            setShowGetQuoteModal={setShowGetQuoteModal}/>
                     </CardContent>
                 </Card>
             </Box>

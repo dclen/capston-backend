@@ -1,6 +1,5 @@
 import React from "react";
 import "./DisplayDriver.css";
-import axios from "axios";
 import {
     Paper,
     Table,
@@ -12,7 +11,6 @@ import {
     Typography
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import CardContent from "@mui/material/CardContent";
 import Box from "@mui/material/Box";
 
 function convertDate(date) {
