@@ -11,6 +11,7 @@ import TextField from "@mui/material/TextField";
 import {Typography} from "@mui/material";
 import UpdateDriver from "../Update/UpdateDriver";
 import DeleteDriver from "../Delete/DeleteDriver";
+import SERVER_URL from "../../utils/constants";
 
 function AdminForm() {
     const [driverId, setDriverId] = useState(null);
@@ -19,7 +20,7 @@ function AdminForm() {
     const [isDriverIdFound, setIsDriverIdFound] = useState(false)
 
     function getDriverDetailsFromAPI(driverId) {
-        const endpointURL = `http://localhost:8080/capstone/${driverId}`;
+        const endpointURL = `${SERVER_URL}/capstone/${driverId}`;
         axios
             .get(endpointURL)
             .then((response) => {

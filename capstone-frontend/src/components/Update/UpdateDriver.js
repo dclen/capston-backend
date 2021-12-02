@@ -4,13 +4,14 @@ import axios from "axios";
 import {useState, useEffect} from "react";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import SERVER_URL from "../../utils/constants";
 
 function UpdateDriver(props) {
 
     const [telephoneNumber, setTelephoneNumber] = useState(props.driverDetails.telephoneNumber);
 
     function onUpdate(driverId) {
-        const endpointURL = `http://localhost:8080/capstone/updatephone/${driverId}`;
+        const endpointURL = `${SERVER_URL}/capstone/updatephone/${driverId}`;
         axios
             .put(endpointURL, {telephoneNumber: telephoneNumber})
             .then(() => props.getDriverDetailsFromAPI(props.driverId))

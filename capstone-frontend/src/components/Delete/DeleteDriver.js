@@ -2,11 +2,12 @@ import * as React from "react";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import SERVER_URL from "../../utils/constants";
 
 function DeleteDriver(props) {
 
     function onDelete(driverId) {
-        const endpointURL = `http://localhost:8080/capstone/${driverId}`;
+        const endpointURL = `${SERVER_URL}/capstone/${driverId}`;
         axios
             .delete(endpointURL)
             .then(() => props.getDriverDetailsFromAPI(props.driverId))
