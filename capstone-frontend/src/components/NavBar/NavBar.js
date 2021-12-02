@@ -5,19 +5,33 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import {Link} from "react-router-dom";
-import AdminForm from "../AdminForm/AdminForm";
+import Grid from "@mui/material/Grid";
 
 function NavBar() {
   return (
     <Box sx={{ flexGrow: 1}}>
       <AppBar position="static">
         <Toolbar sx={{backgroundColor: "blue" }}>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Grid
+              container
+              direction="column"
+              alignItems="flex-start"
+          >
+          <Link  to={"/"}>
+          <Typography variant="h6" component="div" sx={{ color: "white"}}>
             AllState Insurance
           </Typography>
+      </Link>
+          </Grid>
+          <Grid
+              container
+              direction="column-reverse"
+              alignItems="flex-end"
+          >
           <Link to={"/admin"}>
-          <Button sx={{color:"white"}} color="inherit">Admin</Button>
+          <Button sx={{ flexGrow: 1, color:"white", alignContent:"right"}} color="inherit">Admin</Button>
           </Link>
+          </Grid>
         </Toolbar>
       </AppBar>
     </Box>
